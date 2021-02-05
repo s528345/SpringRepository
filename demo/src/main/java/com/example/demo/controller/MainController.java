@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-// @RequestMapping(path = "/")
+@RequestMapping(path = "/")
 public class MainController {
 
     @GetMapping("/")
