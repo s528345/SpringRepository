@@ -66,8 +66,8 @@ public class MaskConfig implements WebMvcConfigurer {
 //
 //        registry.addResourceHandler("/js/**")
 //                .addResourceLocations("/WEB-INF/js/");
-//        registry.addResourceHandler("/**")
-//                .addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS);
+       registry.addResourceHandler("/**")
+               .addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS);
 
     }
 }

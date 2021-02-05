@@ -19,7 +19,7 @@ import java.util.Map;
 public class MainController {
 
     @GetMapping("/")
-    public String mainGet(Map<String, Object> model, ModelMap map){
+    public String index(Map<String, Object> model, ModelMap map){
         System.out.println("test");
         map.addAttribute("test", "value");
         return "index";
