@@ -25,4 +25,10 @@ public class MainController {
         return "index";
     }
 
+    @GetMapping("/test")
+    public String indexTest(Map<String, Object> model, ModelMap map){
+        System.out.println("test");
+        map.addAttribute("test", "value");
+        return "indexTest";
+    }
 }
