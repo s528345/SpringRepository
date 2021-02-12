@@ -9,13 +9,15 @@
 <html>
 <body>
 <h2>Person Details</h2>
-<form action="/postBlank" method="post">
+<form action="postBlank" method="post" id="myForm">
     <label for="fName">Name:</label><br>
     <input type="text" id="fName" name="fName"><br>
     <label for="age">Age:</label><br>
     <input type="text" id="age" name="age"><br><br>
     <input type="submit" value="Submit">
 </form>
+
+<button form="myForm">Also submit</button>
 
 </body>
 </html>
