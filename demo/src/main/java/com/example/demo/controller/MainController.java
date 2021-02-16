@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.Car;
 import com.example.demo.LicensePlate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,19 +21,55 @@ import org.springframework.http.MediaType;
 
 import javax.sound.midi.SysexMessage;
 import javax.validation.Valid;
+import com.example.demo.Car;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import java.util.List;
 
 @Controller
 @RequestMapping(path = "/")
 public class MainController {
+    // this boi key for transactional, custom JPA repo logic
+    @PersistenceContext
+    EntityManager entityManager;
 
     private fakeData _fakeData;
 
     @GetMapping("/")
     public String index(Map<String, Object> model, ModelMap map){
+
         System.out.println("test");
         map.addAttribute("test", "value");
         System.out.println("12a".toUpperCase(Locale.ROOT));
+
+        Car car = new Car("m ","l ", 0);
+        Optional<Car> carOpt = car.getSelfCar();
+        Optional<Car> carOptNull = car.getNullSelfCar(true);
+
+        System.out.println("is carOpt null? "+ carOptNull.isEmpty() + " : value - " + carOpt.orElseGet( () -> {return car;}));
+        System.out.println("is carOpt null? "+ carOptNull.isEmpty() + " : value - " +
+                carOpt.map((car1 -> {return car1;})).orElseGet( () -> {return car;}));
+
+
+        if(carOpt.isPresent())
+            System.out.println("is carOpt null? "+ carOpt.isEmpty() +
+                    " : value - " + carOpt.map((car1)-> car1.toString() +
+                    "now in lambda").get());
+        // map takes in function or lambda that accepts a car as a parameter
+        // creates an optional based on the return type (if value is present)
+        // if value is null then returns an empty optional
+
+        if(carOpt.isPresent()) {
+            System.out.println(carOpt.map(fakeData::staticCallTest).get() + "\nyayyyy!");
+            fakeData data = carOpt.map(fakeData::new).get();
+            System.out.println(data.getfName() + " : " + data.getAge());
+        }
+
+
         return "index";
     }
 

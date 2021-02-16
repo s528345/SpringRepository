@@ -6,6 +6,9 @@ import com.example.demo.validation.CheckCaseEnum;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.*;
+import java.util.Optional;
+
+import static java.util.Optional.empty;
 
 public class fakeData{
     public static String name = "Matthew Berry";
@@ -23,6 +26,12 @@ public class fakeData{
         this.age = age;
     }
 
+    // dummy constructor for testing static context threshold of functional-mapping
+    public fakeData(@NotNull Car car){
+        this.fName = "some car owner";
+        this.age = "95"; // who made this a string like da fuq?
+    }
+
     public String getfName() {
         return fName;
     }
@@ -37,6 +46,10 @@ public class fakeData{
 
     public void setAge(String age) {
         this.age = age;
+    }
+
+    public static String staticCallTest(@NotNull Car car){
+        return car.toString() + " called successful :)";
     }
 
      public class InnerTest{
@@ -129,24 +142,31 @@ public class fakeData{
 
 // @CheckCase(value = CaseMode.lower, myTestValue = 0, message = "now I is here")
 // ofc it's nonsense but ya can add it if target is TYPE
-class Car {
-
-    @NotNull
-    private String manufacturer;
-
-    @NotNull
-    @Size(min = 2, max = 14)
-    @CheckCase(value = CheckCaseEnum.Upper, myTestValue = 0, message = "oops")
-    private String licensePlate;
-
-    @Min(2)
-    private int seatCount;
-
-    public Car ( String manufacturer, String licencePlate, int seatCount ) {
-        this.manufacturer = manufacturer;
-        this.licensePlate = licencePlate;
-        this.seatCount = seatCount;
-    }
-
-    //getters and setters ...
-}
+// class Car {
+//
+//    @NotNull
+//    private String manufacturer;
+//
+//    @NotNull
+//    @Size(min = 2, max = 14)
+//    @CheckCase(value = CheckCaseEnum.Upper, myTestValue = 0, message = "oops")
+//    private String licensePlate;
+//
+//    @Min(2)
+//    private int seatCount;
+//
+//    public Car ( String manufacturer, String licencePlate, int seatCount ) {
+//        this.manufacturer = manufacturer;
+//        this.licensePlate = licencePlate;
+//        this.seatCount = seatCount;
+//    }
+//
+//    public Optional<Car> getSelfCar(){
+//        Optional<String> opt = Optional.of("");
+//        Optional<String> opt1 = Optional.ofNullable(null);
+//        Optional<Car> opt2 = Optional.ofNullable(this);
+//        return opt2;
+//    }
+//
+//    //getters and setters ...
+//}

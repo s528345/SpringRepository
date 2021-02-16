@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import com.example.demo.fakeData;
+import com.example.demo.controller.repository.*;
 
 @RestController
 @RequestMapping(path = "/rest/api/")
@@ -54,6 +55,24 @@ public class RestControllerDemo {
                 ),
                 headers,
                 HttpStatus.OK);
+    }
+
+    @Autowired
+    private MyTableRepository _myTableRepository;
+
+    @GetMapping(path = "/database", produces = MediaType.APPLICATION_JSON_VALUE)
+    ResponseEntity<Map<String, Object>> getDataBaseData(){
+
+        List<MyTable> myTableList = this._myTableRepository.getAllStudentsLike("");
+
+        return new ResponseEntity<Map<String, Object>>(
+                Map.of(
+                        "data", myTableList
+                ),
+                new HttpHeaders(),
+                HttpStatus.OK
+        );
+
     }
 
 }
