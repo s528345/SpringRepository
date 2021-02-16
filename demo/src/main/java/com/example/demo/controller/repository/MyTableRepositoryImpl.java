@@ -17,7 +17,7 @@ public class MyTableRepositoryImpl implements MyTableRepositoryCustom{
     @Override
     public List<MyTable> getAllStudentsLike(String like) {
         Query query = entityManager.createNativeQuery(
-                "SELECT MyTable.* FROM MyTable WHERE PERSONNAME like ?");
+                "SELECT \"MyTable\".* FROM \"MyTable\" WHERE \"MyTable\".\"PERSONNAME\" like ?");
         query.setParameter(1, "%");
 
         return query.getResultList();
