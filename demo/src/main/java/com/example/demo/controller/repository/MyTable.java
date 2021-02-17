@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.UUID;
 
 //@Table(name = "MyTable", schema = "Sys")
-@Table(name = "MyTable")
+@Table(name = "\"MyTable\"")
 @Entity
 public class MyTable {
 
@@ -12,10 +12,10 @@ public class MyTable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column(name= "PERSONNAME")
+    @Column(name= "\"personName\"")
     private String _personName;
 
-    @Column(name = "AGE")
+    @Column(name = "\"age\"")
     private int _age;
 
     public MyTable(UUID id, String personName, int age){
