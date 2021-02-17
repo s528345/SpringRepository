@@ -11,6 +11,6 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface MyTableRepository extends JpaRepository<MyTable, UUID>, MyTableRepositoryCustom {
+public interface MyTableRepository extends JpaRepository<MyTable, Integer>, MyTableRepositoryCustom {
 
 }

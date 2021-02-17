@@ -63,7 +63,11 @@ public class RestControllerDemo {
     @GetMapping(path = "/database", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<Map<String, Object>> getDataBaseData(){
 
-        List<MyTable> myTableList = this._myTableRepository.getAllStudentsLike("");
+        List<Object[]> myTableList = this._myTableRepository.getAllStudentsLike("");
+
+        for(Object[] objects : myTableList)
+            for(Object object: objects)
+                System.out.println(object);
 
         return new ResponseEntity<Map<String, Object>>(
                 Map.of(
