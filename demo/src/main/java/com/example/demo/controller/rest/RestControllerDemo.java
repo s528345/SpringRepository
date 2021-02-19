@@ -79,4 +79,99 @@ public class RestControllerDemo {
 
     }
 
+    public class Class{
+        String name;
+        String courseLevel;
+        int capacity;
+        int availability;
+
+        Class(String n, String cl, int  cap, int avail){
+            this.name = n;
+            this.courseLevel = cl;
+            this.capacity = cap;
+            this.availability = avail;
+        }
+
+        public int getAvailability() {
+            return availability;
+        }
+
+        public int getCapacity() {
+            return capacity;
+        }
+
+        public String getCourseLevel() {
+            return courseLevel;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setAvailability(int availability) {
+            this.availability = availability;
+        }
+
+        public void setCapacity(int capacity) {
+            this.capacity = capacity;
+        }
+
+        public void setCourseLevel(String courseLevel) {
+            this.courseLevel = courseLevel;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+
+    }
+
+    @RequestMapping(path = "/frontEnd", method = RequestMethod.POST,
+    consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Map<String, Object>> FrontEndREST(@RequestBody Map<String, Object> modelMap){
+
+        /* request body:
+            - name: person name (string)
+            - age: person age (int)
+
+            response body:
+            -  ifPersonExist: if the person already exist (bool)
+            -  classes: list of classes student takes (List<Classes>)
+         */
+
+        // pulls student name out of request
+        String personName = (String)modelMap.get("name");
+        int age = (int)modelMap.get("age");
+
+        Class[] obj = {};
+
+        // validation (dummy): if person name is not equal to "seth" or "austin"
+        // age is not less than 18 but not greater than 100
+        if(personName.equals("seth") || personName.equals("austin") || age < 18 || age > 100)
+            return new ResponseEntity<Map<String, Object>>(
+                    Map.of(
+                            "ifPersonExist", !(personName.equals("seth") || personName.equals("austin")),
+                            "classes", obj
+
+                    ),
+                    new HttpHeaders(),
+                    HttpStatus.BAD_REQUEST
+            );
+
+        Class[] classList = {new Class("prog1", "44101", 30, 21),
+        new Class("network fundamentals", "44350", 40, 35)};
+
+        return new ResponseEntity<Map<String, Object>>(
+                Map.of(
+                        "ifPersonExist", true,
+                        "classes", classList
+                ),
+                new HttpHeaders(),
+                HttpStatus.OK
+        );
+
+    }
+
+
 }

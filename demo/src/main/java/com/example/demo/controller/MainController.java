@@ -143,6 +143,7 @@ public class MainController {
                 if(error instanceof FieldError){
                     System.out.println(((FieldError)error).getField());
                     System.out.println(((FieldError)error).getObjectName());
+                    System.out.println(((FieldError)error).getDefaultMessage());
                 }
                 else{
                     System.out.println(PREFIX + error.getObjectName());

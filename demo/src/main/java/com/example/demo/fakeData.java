@@ -3,6 +3,7 @@ package com.example.demo;
 
 import com.example.demo.validation.CheckCase;
 import com.example.demo.validation.CheckCaseEnum;
+import org.hibernate.annotations.Check;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.*;
@@ -18,6 +19,7 @@ public class fakeData{
     private  String fName = "";
     @NotNull
     @Size(min = 0, max = 100, message = "whoops")
+    @CheckCase(value = CheckCaseEnum.Lower, myTestValue = 0)
     private  String age = "";
     private InnerTest _innerTest = new InnerTest(0, 1);
 

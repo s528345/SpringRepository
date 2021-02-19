@@ -10,14 +10,14 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Optional;
 
-public class Car {
+public final class Car {
 
     @NotNull
     private String manufacturer;
 
     @NotNull
     @Size(min = 2, max = 14)
-    @CheckCase(value = CheckCaseEnum.Upper, myTestValue = 0, message = "oops")
+    @CheckCase(value = CheckCaseEnum.Upper, message = "oops", myTestValue = 0)
     private String licensePlate;
 
     @Min(2)
@@ -47,7 +47,7 @@ public class Car {
         return this.licensePlate + this.manufacturer + this.seatCount;
     }
 
-    public static <T> void sortArray(ArrayList<T> list, Comparator<? super T> comparator){}
+    public static <T> void sortArray(@NotNull T[] array, @NotNull final Comparator<? super T> comparator){}
 
 
     //getters and setters ...

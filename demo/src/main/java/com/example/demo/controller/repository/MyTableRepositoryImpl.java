@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class MyTableRepositoryImpl implements MyTableRepositoryCustom{
     EntityManagerFactory entityManagerFactory;
 
     @Override
-    public List<MyTable> getAllStudentsLike(String like) {
+    public List<MyTable> getAllStudentsLike(@NotNull final String like) {
 
         EntityManager em = entityManagerFactory.createEntityManager();
         /*
@@ -65,7 +66,7 @@ public class MyTableRepositoryImpl implements MyTableRepositoryCustom{
     }
 
     @Override
-    public List<String> getAllStudentNamesLike(String like) {
+    public List<String> getAllStudentNamesLike(@NotNull final String like) {
 
         EntityManager em = entityManagerFactory.createEntityManager();
 

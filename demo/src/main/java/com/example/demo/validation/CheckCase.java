@@ -28,6 +28,9 @@ public @interface CheckCase {
 
     int myTestValue() default 0;
 
+    // @Min(10000, myTestValue = 10008)
+    //int age;
+
     @Target({ FIELD, METHOD, PARAMETER, ANNOTATION_TYPE })
     @Retention(RUNTIME)
     @Documented

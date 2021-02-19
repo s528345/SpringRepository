@@ -7,7 +7,8 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 public class LicensePlateValidator implements ConstraintValidator<CheckCase, String> {
-
+// @Checkcase(...)
+    //String someData;
     private CheckCaseEnum caseMode;
     private int _myValue;
 
