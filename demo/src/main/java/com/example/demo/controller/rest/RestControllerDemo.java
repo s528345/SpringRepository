@@ -173,5 +173,27 @@ public class RestControllerDemo {
 
     }
 
+    @Autowired
+    private DateTableRepository _dateTableRepository;
+
+    @GetMapping(path = "/database/date", produces = MediaType.APPLICATION_JSON_VALUE)
+    ResponseEntity<Map<String, Object>> getDateDataBaseData(){
+
+        List<DateTable> myTableList = this._dateTableRepository.getAll();
+
+//        for(Object[] objects : myTableList)
+//            for(Object object: objects)
+//                System.out.println(object);
+
+        return new ResponseEntity<Map<String, Object>>(
+                Map.of(
+                        "data", myTableList
+                ),
+                new HttpHeaders(),
+                HttpStatus.OK
+        );
+
+    }
+
 
 }

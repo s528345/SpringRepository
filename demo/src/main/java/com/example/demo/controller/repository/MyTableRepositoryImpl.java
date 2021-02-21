@@ -48,9 +48,9 @@ public class MyTableRepositoryImpl implements MyTableRepositoryCustom{
 
         Query query = em.createNativeQuery(
                 "SELECT \"MyTable\".* FROM \"MyTable\" WHERE \"MyTable\".\"personName\" like ?");
-        query.setParameter(1, like + "%");
+        query.setParameter(1, like + "%"); // "n%" "nickdjkafsdklhjaesdlkj%"
 
-        List<Object[]> myList = query.getResultList();
+        List<Object[]> myList = query.getResultList(); // [ [id, name, age] , ... ]
 
         List<MyTable> returnValue = new ArrayList<MyTable>();
 

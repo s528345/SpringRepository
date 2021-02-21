@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 
 public final class Car {
@@ -30,8 +31,9 @@ public final class Car {
     }
 
     public Optional<Car> getSelfCar(){
-        Optional<String> opt = Optional.of("");
-        Optional<String> opt1 = Optional.ofNullable(null);
+        Optional<String> opt = Optional.of(""); // parameter must NOT be null
+        Optional<String> opt1 = Optional.ofNullable(null); // parameter CAN be null
+        Optional<String> optNull = Optional.empty(); // optional WITH a null inside
         Optional<Car> opt2 = Optional.ofNullable(this);
         return opt2;
     }
@@ -47,8 +49,8 @@ public final class Car {
         return this.licensePlate + this.manufacturer + this.seatCount;
     }
 
-    public static <T> void sortArray(@NotNull T[] array, @NotNull final Comparator<? super T> comparator){}
-
+    public static <T extends Object> void sortArray(@NotNull T[] array, @NotNull final Comparator<? super T> comparator){}
+    // living thing -> mammals -> humans
 
     //getters and setters ...
 }

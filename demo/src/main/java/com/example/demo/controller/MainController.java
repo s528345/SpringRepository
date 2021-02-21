@@ -54,6 +54,13 @@ public class MainController {
         System.out.println("is carOpt null? "+ carOptNull.isEmpty() + " : value - " +
                 carOpt.map((car1 -> {return car1;})).orElseGet( () -> {return car;}));
 
+        if(carOpt.isPresent()){ // long but easy way
+            // safe to get
+            Car myLocalCar = carOpt.get();
+            String output = fakeData.staticCallTest(myLocalCar);
+        }
+
+
 
         if(carOpt.isPresent())
             System.out.println("is carOpt null? "+ carOpt.isEmpty() +
