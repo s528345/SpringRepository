@@ -1,7 +1,9 @@
 package com.example.demo.controller.repository;
 
+import com.example.demo.DataAccessConversionException;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -9,6 +11,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 @Repository
 public class DateTableRepositoryImpl implements DateTableRepositoryCustom{
@@ -50,14 +53,38 @@ public class DateTableRepositoryImpl implements DateTableRepositoryCustom{
 
         List<DateTable> returnValue = new ArrayList<DateTable>();
 
-        for(int i = 0; i< myList.size(); i++){
-            returnValue.add(new DateTable());
-            returnValue.get(i).updateDataAccessObject(myList.get(i));
-        }
+        DateTableRepositoryImpl.createDataAccessObjects(myList, returnValue, DateTable::new);
+
+//        for(int i = 0; i< myList.size(); i++){
+//            returnValue.add(new DateTable());
+//            returnValue.get(i).updateDataAccessObject(myList.get(i));
+//        }
 
         for(Object myTable : myList)
             System.out.println("print row: " + myTable.toString());
 
         return returnValue;
+    }
+
+    public static <U extends List<T>, T extends DataAccessConversion> void createDataAccessObjects(
+            @NotNull final List<? extends Object[]> data, @NotNull final U dataList,
+            @NotNull final Supplier<T> typeConstructor) throws DataAccessConversionException, IllegalArgumentException {
+
+        if(dataList.size() != 0)
+            throw new IllegalArgumentException("list size of data access must be 0");
+
+        try{
+            for(int i = 0; i < data.size(); i++){
+                dataList.add(typeConstructor.get());
+                dataList.get(i).updateDataAccessObject(data.get(i));
+            }
+        }
+        catch(Exception e){
+            throw new DataAccessConversionException("" +
+                    "DataAccess type conversion failed. Make sure Object[] matches the column" +
+                    "order of the table's DDL implementation and that the DataAccessConversion implementation" +
+                    "matches the table's DDL implementation.");
+        }
+
     }
 }

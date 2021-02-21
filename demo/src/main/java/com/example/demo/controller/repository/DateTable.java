@@ -9,9 +9,19 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 @Entity
 public class DateTable implements DataAccessConversion{
+
+//    public static @NotNull Supplier<DateTable> getSupplier(){
+//        return new Supplier<DateTable>() {
+//            @Override
+//            public DateTable get() {
+//                return new DateTable();
+//            }
+//        };
+//    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
