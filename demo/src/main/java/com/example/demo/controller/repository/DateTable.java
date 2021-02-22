@@ -1,6 +1,7 @@
 package com.example.demo.controller.repository;
 
 import oracle.sql.DATE;
+import org.javatuples.Pair;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -29,7 +30,7 @@ public class DateTable implements DataAccessConversion{
 
     private Date _dateTime;
 
-    private String _dateString;
+    private String _dateString = "";
 
     public DateTable(){}
 
@@ -74,6 +75,13 @@ public class DateTable implements DataAccessConversion{
                 String.valueOf(calendar.get(Calendar.YEAR));
     }
 
+    public static Pair<Integer, Integer> giveDummyTuple(){
+        Pair<Integer, Integer> tuple = new Pair<Integer, Integer>(0, 1);
+        System.out.println("value 1: " + tuple.getValue0() + "\nvalue 2: " + tuple.getValue1());
+
+        return tuple;
+    }
+
     @Override
     public void updateDataAccessObject(@NotNull Object[] values) {
         // updates instance with given column ordering (pkey, date)
@@ -81,6 +89,8 @@ public class DateTable implements DataAccessConversion{
         System.out.println(values[1]);
         this._dateTime = (Date)values[1];
 
-        this.set_dateString(this._dateTime);
+        // System.out.println("fine here!");
+        if(this._dateTime != null)
+            this.set_dateString(this._dateTime);
     }
 }

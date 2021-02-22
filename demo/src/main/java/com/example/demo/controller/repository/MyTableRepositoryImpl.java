@@ -23,18 +23,22 @@ public class MyTableRepositoryImpl implements MyTableRepositoryCustom{
     public List<MyTable> getAllStudentsLike(@NotNull final String like) {
 
         EntityManager em = entityManagerFactory.createEntityManager();
-        /*
+
         EntityTransaction transaction = null;
 
         try {
             transaction = em.getTransaction();
 
             transaction.begin();
-            Query query1 = em.createNativeQuery(
-                    "Insert into \"MyTable\" (\"personName\", \"age\") values (\'liz\', 50) "
-            );
+//            Query query1 = em.createNativeQuery(
+//                    "Insert into \"MyTable\" (\"personName\", \"age\") values (\'liz\', 50) "
+//            );
+
+            Query query1 = em.createNativeQuery("Update \"MyTable\" set \"personName\" = \'nick\'" +
+                    "where \"personName\" = \'nickk\' ");
+
             int result = query1.executeUpdate();
-            System.out.println("result: " + result);
+            System.out.println("result from update: " + result);
             transaction.commit();
         }
         catch(RuntimeException ex){
@@ -44,7 +48,7 @@ public class MyTableRepositoryImpl implements MyTableRepositoryCustom{
             // log error return invalid response
         }
 
-         */
+
 
         Query query = em.createNativeQuery(
                 "SELECT \"MyTable\".* FROM \"MyTable\" WHERE \"MyTable\".\"personName\" like ?");

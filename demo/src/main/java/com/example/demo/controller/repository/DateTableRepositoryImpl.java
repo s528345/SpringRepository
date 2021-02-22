@@ -2,6 +2,7 @@ package com.example.demo.controller.repository;
 
 import com.example.demo.DataAccessConversionException;
 import org.hibernate.Transaction;
+import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.stereotype.Repository;
@@ -21,6 +22,12 @@ public class DateTableRepositoryImpl implements DateTableRepositoryCustom{
 
     @Override
     public List<DateTable> getAll() {
+
+        // tuple test
+        Pair<Integer, Integer> pair = DateTable.giveDummyTuple();
+
+//        Object[] testArray = {null, null};
+//        String testValue = (String)testArray[0];
 
         EntityManager em = entityManagerFactory.createEntityManager();
 
@@ -50,6 +57,14 @@ public class DateTableRepositoryImpl implements DateTableRepositoryCustom{
                 "SELECT \"MyTestDateTable\".* FROM \"MyTestDateTable\"");
 
         List<Object[]> myList = query.getResultList(); // [ [id, name, age] , ... ]
+
+//        Query query2 = em.createNativeQuery("SELECT \"NWTXDT\".* FROM \"NWTXDT\" ");
+//        List<Object[]> myList1 = query2.getResultList();
+//        for(Object object : myList1.get(0))
+//            System.out.println(object == null ? "Yes it's null" : "Not here buckeroo");
+
+        for(Object[] objects : myList)
+            System.out.println("size: " + objects.length + "\ndate: " + objects[1]);
 
         List<DateTable> returnValue = new ArrayList<DateTable>();
 
