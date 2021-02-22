@@ -11,11 +11,13 @@ public class LicensePlateValidator implements ConstraintValidator<CheckCase, Str
     //String someData;
     private CheckCaseEnum caseMode;
     private int _myValue;
+    private String message;
 
     @Override
     public void initialize(CheckCase constraintAnnotation) {
         this.caseMode = constraintAnnotation.value();
         this._myValue = constraintAnnotation.myTestValue();
+        this.message = this.caseMode.getValue();
     }
 
     @Override
