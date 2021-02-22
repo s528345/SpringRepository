@@ -26,7 +26,7 @@ public class DateTableRepositoryImpl implements DateTableRepositoryCustom{
         // tuple test
         Pair<Integer, Integer> pair = DateTable.giveDummyTuple();
 
-//        Object[] testArray = {null, null};
+//          Object[] testArray = new Object[2];
 //        String testValue = (String)testArray[0];
 
         EntityManager em = entityManagerFactory.createEntityManager();
@@ -93,6 +93,24 @@ public class DateTableRepositoryImpl implements DateTableRepositoryCustom{
                 dataList.add(typeConstructor.get());
                 dataList.get(i).updateDataAccessObject(data.get(i));
             }
+        }
+        catch(Exception e){
+            throw new DataAccessConversionException("" +
+                    "DataAccess type conversion failed. Make sure Object[] matches the column" +
+                    "order of the table's DDL implementation and that the DataAccessConversion implementation" +
+                    "matches the table's DDL implementation.");
+        }
+
+    }
+
+    public static <T extends DataAccessConversion> T createDataAccessObject(
+            @NotNull final Object[] data, @NotNull final T dataList,
+            @NotNull final Supplier<T> typeConstructor) throws DataAccessConversionException, IllegalArgumentException {
+
+        try{
+            T returnValue = typeConstructor.get();
+            returnValue.updateDataAccessObject(data);
+            return returnValue;
         }
         catch(Exception e){
             throw new DataAccessConversionException("" +

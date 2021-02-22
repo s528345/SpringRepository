@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class MyTableRepositoryImpl implements MyTableRepositoryCustom{
+public class MyTableRepositoryImpl implements MyTableRepositoryCustom, com.example.demo.controller.repository.Repository {
 
 //    @PersistenceContext
 //    EntityManager entityManager;
@@ -25,6 +25,8 @@ public class MyTableRepositoryImpl implements MyTableRepositoryCustom{
         EntityManager em = entityManagerFactory.createEntityManager();
 
         EntityTransaction transaction = null;
+
+        final String TABLE_NAME = tableName();
 
         try {
             transaction = em.getTransaction();
@@ -51,7 +53,7 @@ public class MyTableRepositoryImpl implements MyTableRepositoryCustom{
 
 
         Query query = em.createNativeQuery(
-                "SELECT \"MyTable\".* FROM \"MyTable\" WHERE \"MyTable\".\"personName\" like ?");
+                "SELECT " + tableName() + ".* FROM \"MyTable\" WHERE \"MyTable\".\"personName\" like ?");
         query.setParameter(1, like + "%"); // "n%" "nickdjkafsdklhjaesdlkj%"
 
         List<Object[]> myList = query.getResultList(); // [ [id, name, age] , ... ]
@@ -83,4 +85,8 @@ public class MyTableRepositoryImpl implements MyTableRepositoryCustom{
         return query.getResultList();
     }
 
+    @Override
+    public String tableName() {
+        return "\"MyTable\"";
+    }
 }
