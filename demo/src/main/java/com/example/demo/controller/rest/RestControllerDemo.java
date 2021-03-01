@@ -21,9 +21,11 @@ import com.example.demo.controller.repository.*;
 @RequestMapping(path = "/rest/api/")
 public class RestControllerDemo {
 
-    @RequestMapping(path = "/customHeader", method = RequestMethod.GET,
-    consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<fakeData> customHeader(@RequestBody Map<String, String> bodyMap) {
+    @RequestMapping(path = "/customHeader",
+                    method = RequestMethod.GET,
+                    consumes = MediaType.APPLICATION_JSON_VALUE,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
+                    ResponseEntity<fakeData> customHeader(@RequestBody Map<String, String> bodyMap) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Custom-Header", "foo");
 

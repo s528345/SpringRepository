@@ -17,10 +17,16 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 public class MaskConfig implements WebMvcConfigurer {
     @Autowired
     private ApplicationContext applicationContext;
+
     private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
             "classpath:/META-INF/resources/", "classpath:/resources/",
             "classpath:/static/", "classpath:/public/"
     };
+
+    private static final String CLASSPATH_IMG_RESOURCE_LOCATION = "classpath:/static/img/";
+    private static final String CLASSPATH_JS_RESOURCE_LOCATION = "classpath:/static/JS/";
+
+    private static final String CLASSPATH_CSS_RESOURCE_LOCATION = "classpath:/static/CSS/";
 
     @Bean
     public ViewResolver viewResolver(){
@@ -58,15 +64,15 @@ public class MaskConfig implements WebMvcConfigurer {
     }
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        registry.addResourceHandler("/img/**")
-//                .addResourceLocations("/static/img/");
-//
-//        registry.addResourceHandler("/css/**")
-//                .addResourceLocations("/static/css/");
-//
-//        registry.addResourceHandler("/js/**")
-//                .addResourceLocations("/WEB-INF/js/");
-       registry.addResourceHandler("/**")
+       registry.addResourceHandler("/img/**")
+               .addResourceLocations(CLASSPATH_IMG_RESOURCE_LOCATION);
+
+       registry.addResourceHandler("/css/**")
+               .addResourceLocations(CLASSPATH_CSS_RESOURCE_LOCATION);
+
+              registry.addResourceHandler("/js/**")
+               .addResourceLocations(CLASSPATH_JS_RESOURCE_LOCATION);
+               registry.addResourceHandler("/**")
                .addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS);
 
     }

@@ -13,5 +13,8 @@
 <a href="validationForm">
     <button style="background-color: blue; color: black; font-size: large">Go to validation form</button>
 </a>
+<a href="mytable">
+    <button style="background-color: blue; color: black; font-size: large">Go to Add Student form</button>
+</a>
 </body>
 </html>
