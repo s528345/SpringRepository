@@ -34,15 +34,23 @@ public class DateTableRepositoryImpl implements DateTableRepositoryCustom{
         EntityTransaction transaction = null;
 
 //        try {
+//            // if db operations 1,2 are good then commit
+//            // if 1,2,3,4,5 are good then commit
+//            // if [3,5] fail, then partial rollback
+//            // if [1,2] fails complete rollback
 //            transaction = em.getTransaction();
 //
 //            transaction.begin();
 //            Query query1 = em.createNativeQuery(
-//                    "Insert into \"MyTestDateTable\" (\"date\") values (to_date('08-06-1997', 'DD-MM-RRRR'))"
+//                    "Insert into \"MyTestDateTable\" (\"date\") values (to_date('01-02-1999', 'DD-MM-RRRR'))"
 //            );
 //            int result = query1.executeUpdate();
 //            System.out.println("result: " + result);
 //            transaction.commit();
+//
+//            // create a new transaction
+//            // do 3,4,5
+//            // if error then rollback this (net effect: partial rollback)
 //        }
 //        catch(RuntimeException ex){
 //            if(transaction != null && transaction.isActive())
@@ -89,9 +97,8 @@ public class DateTableRepositoryImpl implements DateTableRepositoryCustom{
             throw new IllegalArgumentException("list size of data access must be 0");
 
         try{
-            for(int i = 0; i < data.size(); i++){
-                dataList.add(typeConstructor.get());
-                dataList.get(i).updateDataAccessObject(data.get(i));
+            for (Object[] objectData : data) {
+                dataList.add(createDataAccessObject(objectData, typeConstructor));
             }
         }
         catch(Exception e){
@@ -104,20 +111,13 @@ public class DateTableRepositoryImpl implements DateTableRepositoryCustom{
     }
 
     public static <T extends DataAccessConversion> T createDataAccessObject(
-            @NotNull final Object[] data, @NotNull final T dataList,
-            @NotNull final Supplier<T> typeConstructor) throws DataAccessConversionException, IllegalArgumentException {
+            @NotNull final Object[] data,
+            @NotNull final Supplier<T> typeConstructor)
+            throws DataAccessConversionException, IllegalArgumentException {
 
-        try{
             T returnValue = typeConstructor.get();
             returnValue.updateDataAccessObject(data);
             return returnValue;
-        }
-        catch(Exception e){
-            throw new DataAccessConversionException("" +
-                    "DataAccess type conversion failed. Make sure Object[] matches the column" +
-                    "order of the table's DDL implementation and that the DataAccessConversion implementation" +
-                    "matches the table's DDL implementation.");
-        }
 
     }
 }
