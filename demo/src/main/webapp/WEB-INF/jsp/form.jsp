@@ -21,12 +21,6 @@
             padding: 15px;
             text-align: left;
         }
-        /*tr :nth-child(even) {*/
-        /*    background-color: #eee;*/
-        /*}*/
-        /*tr :nth-child(odd) {*/
-        /*    background-color: #fff;*/
-        /*}*/
         th {
             background-color: black;
             color: white;
@@ -45,28 +39,18 @@
     <label for="classes">Classes:</label><br>
     <input type="text" name="classes" id="classes" /><br>
     <button onclick="addRow();">Add Student</button>
+    <button onclick="addRows();">Get Students</button>
     <input type="hidden" name="status" id="status" /><br>
 
 
 <div align="center">
     <h2>List of Students</h2>
-    <table>
+    <table id="myTable">
         <tr>
             <th>Name</th>
             <th>Age</th>
             <th>Class</th>
         </tr>
-        <tr>
-            <td>Seth</td>
-            <td>21</td>
-            <td>Big Data</td>
-        </tr>
-        <tr>
-            <td>Austin</td>
-            <td>21</td>
-            <td>Software Engineering</td>
-        </tr>
-
 
     </table>
 </div>

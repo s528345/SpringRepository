@@ -12,7 +12,7 @@
     <%! int x = 0; %>
 <%
     int x = 3;
-    out.println("your number with one more is: " + ++x);
+    //out.println("your number with one more is: " + ++x);
 %>
 <p>your number is now after adding: <%= x %> </p>
 

@@ -162,7 +162,7 @@ public class RestControllerDemo {
             );
 
         Class[] classList = {new Class("prog1", "44101", 30, 21),
-        new Class("network fundamentals", "44350", 40, 35)};
+                            new Class("network fundamentals", "44350", 40, 35)};
 
         return new ResponseEntity<Map<String, Object>>(
                 Map.of(
