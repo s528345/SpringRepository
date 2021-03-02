@@ -21,7 +21,7 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-    @Target({ FIELD, METHOD, PARAMETER, ANNOTATION_TYPE, TYPE }) // add TYPE to be applicable to class
+    @Target({ TYPE }) // add TYPE to be applicable to class
     @Retention(RUNTIME)
     @Constraint(validatedBy = LicensePlateClassValidator.class)
     @Documented

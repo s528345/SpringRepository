@@ -1,6 +1,9 @@
 package com.example.demo.controller.rest;
 
+import com.example.demo.testInheritance.B;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -28,6 +31,9 @@ public class RestControllerDemo {
         headers.add("Custom-Header", "foo");
 
         System.out.println(bodyMap.get("name") == null || bodyMap.get("age") == null);
+
+        // inheritance test from static context
+        B.printFullName();
 
         return new ResponseEntity<fakeData>(
                 new fakeData(
@@ -129,7 +135,19 @@ public class RestControllerDemo {
 
     @RequestMapping(path = "/frontEnd", method = RequestMethod.POST,
     consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Map<String, Object>> FrontEndREST(@RequestBody Map<String, Object> modelMap){
+    public ResponseEntity<Map<String, Object>> FrontEndREST(@RequestBody String jsonString)
+    throws JSONException {
+
+        System.out.println(jsonString);
+
+        JSONObject modelMap = new JSONObject(jsonString);
+
+        if(false)
+            return new ResponseEntity<Map<String, Object>>(
+                        Map.of("number", 2),
+                    new HttpHeaders(),
+                    HttpStatus.OK
+                    );
 
         /* request body:
             - name: person name (string)

@@ -44,6 +44,7 @@ public class MainController {
 
         System.out.println("test");
         map.addAttribute("test", "value");
+        map.addAttribute("test1", null);
         System.out.println("12a".toUpperCase(Locale.ROOT));
 
         Car car = new Car("m ","l ", 0);
@@ -108,7 +109,7 @@ public class MainController {
         System.out.println(result.hasErrors());
         if(result.hasErrors())
             for( ObjectError error : result.getAllErrors()) {
-                System.out.println(error.getDefaultMessage());
+                System.out.println("object error " + error.getDefaultMessage());
                 if(error instanceof FieldError){
                     System.out.println(((FieldError)error).getField());
                     System.out.println(((FieldError)error).getObjectName());
@@ -164,5 +165,10 @@ public class MainController {
         modelMap.addAttribute("success", result.hasErrors());
 
         return "validationResult";
+    }
+
+    @RequestMapping(path = "/apiTest", method = RequestMethod.GET)
+    public String getApiTest(){
+        return "apiTest";
     }
 }
