@@ -32,9 +32,7 @@ public class ManualValidatorClass implements ConstraintValidator<ManualValidator
         if ( !isValid ) {
             constraintContext.disableDefaultConstraintViolation();
             constraintContext.buildConstraintViolationWithTemplate(
-                    "{org.hibernate.validator.referenceguide.chapter03." +
-                            "constraintvalidatorcontext.CheckCase.message}" +
-                            "you've done fucked up boi"
+                    "[ {  \"Oops\" : \"you done messed up my guy\" }  ] "
             )
                     .addConstraintViolation();
         }

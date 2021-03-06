@@ -2,9 +2,12 @@ package com.example.demo.controller.rest;
 
 import com.example.demo.LicensePlate1;
 import com.example.demo.testInheritance.B;
+import com.example.demo.validation.ApiValidationHandler.ApiValidationHandler;
 import com.example.demo.validation.CheckCase;
 import com.example.demo.validation.LicensePlateClassValidator;
 import com.example.demo.validation.LicensePlateClassValidatorInterface;
+import org.javatuples.Pair;
+import org.javatuples.Triplet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONException;
@@ -26,6 +29,7 @@ import com.example.demo.controller.repository.*;
 import javax.validation.ConstraintValidatorContext;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import javax.validation.constraints.NotNull;
 
 @RestController
 @RequestMapping(path = "/rest/api/")
@@ -223,6 +227,8 @@ public class RestControllerDemo {
     @Autowired
     Validator validator;
 
+    private static final String OPTIONAL_NULL_ERROR = "Error: cannot accessed configured error response -- contact IT support";
+
 
     @GetMapping(path = "/testValidator", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getTestValidator(@RequestBody Map<String, Object> map) throws JSONException {
@@ -238,35 +244,45 @@ public class RestControllerDemo {
                 (int)map.get("yearsOwned")
         );
 
+        Optional<String> validationResponse =
+                ApiValidationHandler.SHARED.getApiBindingError(plate1);
+
+        // NOTE: error type will never be a generic error in this demo
+        if(validationResponse.isPresent()){
 
 
-        // System.out.println(plate1.getOwnerName());
+//
+//            final String response;
+//
+//            if(errorResponse.getValue2() == BindingErrorResponseType.JSON)
+//                response = errorResponse.getValue0().isPresent() ?
+//                        errorResponse.getValue0().get().toString() : OPTIONAL_NULL_ERROR;
+//            else
+//                response = errorResponse.getValue1().isPresent() ?
+//                        errorResponse.getValue1().get() : OPTIONAL_NULL_ERROR;
 
-        final JSONObject responseObject = new JSONObject();
-        final JSONArray responseArray = new JSONArray();
 
-
-        System.out.println("manual validation commencing");
-        Set<ConstraintViolation<LicensePlate1>> violationSet = validator.validate(plate1);
-
-        System.out.println("manual validation results processing");
-
-        if(!violationSet.isEmpty()){
-
-            for(ConstraintViolation<LicensePlate1> violation : violationSet)
-                responseArray.put(violation.getMessage());
+            return new ResponseEntity<String>(
+                     validationResponse.orElseThrow(() -> new RuntimeException("Error accessing validation-binding response. Project compromised." +
+                             "Please contact IT Support.")),
+                    new HttpHeaders(),
+                    HttpStatus.OK
+            );
         }
-        System.out.println("manual validation ending");
 
+        // do other important business logic
 
-
-        responseObject.put("data", responseArray);
-
+        // empty json array (demo purpose)
         return new ResponseEntity<String>(
-                responseObject.toString(),
+                new JSONArray().toString(),
                 new HttpHeaders(),
                 HttpStatus.OK
         );
 
     }
+
+    // would hold all api view models
+    public interface ApiViewModel{}
+
+
 }

@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.example.demo.controller.rest.RestControllerDemo;
 import com.example.demo.validation.CheckCase;
 import com.example.demo.validation.CheckCaseEnum;
 
@@ -8,7 +9,7 @@ import javax.validation.constraints.*;
 import com.example.demo.validation.*;
 
 @ManualValidatorInterface(value = 22, myTestValue = "Nick")
-public class LicensePlate1 {
+public class LicensePlate1 implements RestControllerDemo.ApiViewModel {
 
     // demo class to show how custom, autowired validation can be applied to a class
 
