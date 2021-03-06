@@ -1,7 +1,12 @@
 package com.example.demo.controller.rest;
 
+import com.example.demo.LicensePlate1;
 import com.example.demo.testInheritance.B;
+import com.example.demo.validation.CheckCase;
+import com.example.demo.validation.LicensePlateClassValidator;
+import com.example.demo.validation.LicensePlateClassValidatorInterface;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.*;
@@ -13,12 +18,14 @@ import org.springframework.web.bind.annotation.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import com.example.demo.fakeData;
 import com.example.demo.controller.repository.*;
+
+import javax.validation.ConstraintValidatorContext;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 
 @RestController
 @RequestMapping(path = "/rest/api/")
@@ -213,5 +220,53 @@ public class RestControllerDemo {
 
     }
 
+    @Autowired
+    Validator validator;
 
+
+    @GetMapping(path = "/testValidator", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getTestValidator(@RequestBody Map<String, Object> map) throws JSONException {
+
+
+        System.out.println(map.containsKey("yearsOwned"));
+        System.out.println(map.containsKey("licensePlate"));
+        System.out.println(map.containsKey("ownerName"));
+
+        final LicensePlate1 plate1 = new LicensePlate1(
+                (String)map.get("ownerName"),
+                (String)map.get("licensePlate"),
+                (int)map.get("yearsOwned")
+        );
+
+
+
+        // System.out.println(plate1.getOwnerName());
+
+        final JSONObject responseObject = new JSONObject();
+        final JSONArray responseArray = new JSONArray();
+
+
+        System.out.println("manual validation commencing");
+        Set<ConstraintViolation<LicensePlate1>> violationSet = validator.validate(plate1);
+
+        System.out.println("manual validation results processing");
+
+        if(!violationSet.isEmpty()){
+
+            for(ConstraintViolation<LicensePlate1> violation : violationSet)
+                responseArray.put(violation.getMessage());
+        }
+        System.out.println("manual validation ending");
+
+
+
+        responseObject.put("data", responseArray);
+
+        return new ResponseEntity<String>(
+                responseObject.toString(),
+                new HttpHeaders(),
+                HttpStatus.OK
+        );
+
+    }
 }

@@ -10,4 +10,10 @@ class HelloWorldApplicationTests {
 	void contextLoads() {
 	}
 
+	@Test
+	void testSomething(){
+		//assert()
+	}
+
+
 }

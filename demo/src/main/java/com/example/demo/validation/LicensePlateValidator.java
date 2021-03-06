@@ -17,6 +17,8 @@ public class LicensePlateValidator implements ConstraintValidator<CheckCase, Str
     private int _myValue;
     private String message;
 
+    private static String staticVariable = CheckCase.GENERIC_ERROR_MESSAGE;
+
     @Override
     public void initialize(CheckCase constraintAnnotation) {
         this.caseMode = constraintAnnotation.value();
