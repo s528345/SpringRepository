@@ -229,13 +229,20 @@ public class RestControllerDemo {
     @Autowired
     private Validator validator;
 
+    @Autowired
+    ApiValidationHandler handler;
+
+//    @Autowired
+//    ApiValidationHandler stuff;
+
     @GetMapping(path = "/testValidator", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getTestValidator(@RequestBody Map<String, Object> map) throws JSONException {
 
+       // System.out.println(stuff != null);
 
-        System.out.println(map.containsKey("yearsOwned"));
-        System.out.println(map.containsKey("licensePlate"));
-        System.out.println(map.containsKey("ownerName"));
+//        System.out.println(map.containsKey("yearsOwned"));
+//        System.out.println(map.containsKey("licensePlate"));
+//        System.out.println(map.containsKey("ownerName"));
 
         final LicensePlate1 plate1 = new LicensePlate1(
                 (String)map.get("ownerName"),
@@ -244,7 +251,7 @@ public class RestControllerDemo {
         );
 
         Optional<String> validationResponse =
-                ApiValidationHandler.getApiBindingError(plate1, validator);
+                handler.getApiBindingError(plate1, validator);
 
         // NOTE: error type will never be a generic error in this demo
         if(validationResponse.isPresent()){
