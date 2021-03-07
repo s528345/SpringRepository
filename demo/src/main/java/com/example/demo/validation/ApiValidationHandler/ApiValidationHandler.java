@@ -5,6 +5,7 @@ import com.example.demo.testInheritance.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
@@ -13,12 +14,15 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Set;
 
+@Service
 public class ApiValidationHandler {
 
-    public static final ApiValidationHandler SHARED = new ApiValidationHandler();
+    // public static final ApiValidationHandler SHARED = new ApiValidationHandler();
 
-    private ApiValidationHandler(){}
+    // private ApiValidationHandler(){}
 
+    @Autowired
+    static Validator validator1;
 
     // generic method configuration for validating viewmodels (api -- subparse objects require
     // manual instigation).  This is due to a REST response retaining 1:m viewmodels and
@@ -26,12 +30,10 @@ public class ApiValidationHandler {
     // (ie: int myNum --> { "myNum" : 3 }   will always fail.
     private enum BindingErrorResponseType { JSON, GENERIC_STRING }
 
-    @Autowired
-    private Validator validator;
-
-    public <T extends RestControllerDemo.ApiViewModel> @NotNull Optional<String>
-    getApiBindingError(@NotNull final T viewModel) throws JSONException {
-
+    public static <T extends RestControllerDemo.ApiViewModel> @NotNull Optional<String>
+    getApiBindingError(@NotNull final T viewModel, @NotNull final Validator validator) throws JSONException {
+        System.out.print("service check: ");
+        System.out.println(validator1 == null);
         final String response;
 
 

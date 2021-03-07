@@ -224,11 +224,10 @@ public class RestControllerDemo {
 
     }
 
-    @Autowired
-    Validator validator;
-
     private static final String OPTIONAL_NULL_ERROR = "Error: cannot accessed configured error response -- contact IT support";
 
+    @Autowired
+    private Validator validator;
 
     @GetMapping(path = "/testValidator", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getTestValidator(@RequestBody Map<String, Object> map) throws JSONException {
@@ -245,7 +244,7 @@ public class RestControllerDemo {
         );
 
         Optional<String> validationResponse =
-                ApiValidationHandler.SHARED.getApiBindingError(plate1);
+                ApiValidationHandler.getApiBindingError(plate1, validator);
 
         // NOTE: error type will never be a generic error in this demo
         if(validationResponse.isPresent()){
