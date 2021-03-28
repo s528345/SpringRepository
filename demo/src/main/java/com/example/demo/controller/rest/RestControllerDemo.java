@@ -288,7 +288,20 @@ public class RestControllerDemo {
     }
 
     // would hold all api view models
-    public interface ApiViewModel{}
+    public interface ApiViewModel{
+        public static <T extends Test> @NotNull T createDaStuff(){
+            return null;
+        }
+    }
+
+    public interface Test{}
+
+    private static class DummyApiViewModel implements ApiViewModel{
+
+        public static <T extends Test> @NotNull T createDaStuff(){
+            return null;
+        }
+    }
 
 
 }

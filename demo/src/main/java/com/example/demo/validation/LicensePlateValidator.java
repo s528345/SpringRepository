@@ -145,6 +145,7 @@ public class LicensePlateValidator implements ConstraintValidator<CheckCase, Str
 
             json.put("testInt", 3);
             json.put("testBool", true);
+            json.put("testBool", false); // invokes clobber
             json.put("testNull", null);
             json.put("testObject", subJson);
 
@@ -154,7 +155,7 @@ public class LicensePlateValidator implements ConstraintValidator<CheckCase, Str
 
             json.put("arrayOfInts", jsonArray);
 
-            System.out.println(json.toString());
+            System.out.println("json object:\n" + json.toString());
 
             jsonArray = json.getJSONArray("arrayOfInts");
 

@@ -1,5 +1,8 @@
 package com.example.demo.testInheritance;
 
+import org.springframework.stereotype.Component;
+
+
 public final class B extends A{
 
     public String lName;

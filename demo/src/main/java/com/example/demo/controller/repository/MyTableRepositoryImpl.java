@@ -50,12 +50,23 @@ public class MyTableRepositoryImpl implements MyTableRepositoryCustom, com.examp
             // log error return invalid response
         }
 
+        /*
+                Query query = em.createNativeQuery(
+                "SELECT " + tableName() + ".* FROM \"MyTable\" WHERE (\"MyTable\".\"personName\" like ?) And " +
+                        "(\"MyTable\".\"age\" >= 30)");
+         */
 
+        String queryToChange = "SELECT tableName.* FROM tableName WHERE (tableName.\"personName\" like ?) And " +
+                "(tableName.\"age\" >= ?) AND (tableName.\"personName\" != ?)";
 
-        Query query = em.createNativeQuery(
-                "SELECT " + tableName() + ".* FROM \"MyTable\" WHERE \"MyTable\".\"personName\" like ?");
+        String queryToUse = MyTableRepositoryImpl.insertTableNameIntoQuery(queryToChange, tableName());
+
+        System.out.println(queryToUse);
+
+        Query query = em.createNativeQuery(queryToUse);
         query.setParameter(1, like + "%"); // "n%" "nickdjkafsdklhjaesdlkj%"
-
+        query.setParameter(2, 30);
+        query.setParameter(3, "ryan");
         List<Object[]> myList = query.getResultList(); // [ [id, name, age] , ... ]
 
         List<MyTable> returnValue = new ArrayList<MyTable>();
@@ -88,5 +99,19 @@ public class MyTableRepositoryImpl implements MyTableRepositoryCustom, com.examp
     @Override
     public String tableName() {
         return "\"MyTable\"";
+    }
+
+    /**
+     * Replaces the targeted query with all nominal place holders (tableName)
+     * with the selected table targeted for the repository.
+     * @param query: String query to manipulate (final member) so new copy given
+     * @param tableName: String name of table for which entity repository corresponds with
+     * @return amended query with table names inserted at placeholders.
+     */
+    private static @NotNull String insertTableNameIntoQuery(
+            @NotNull final String query,
+            @NotNull final String tableName){
+
+        return query.replaceAll("tableName",tableName );
     }
 }
