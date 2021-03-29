@@ -33,7 +33,7 @@ import java.util.List;
 @Controller
 @RequestMapping(path = "/")
 public class MainController {
-    // this boi key for transactional, custom JPA repo logic
+    // this boi key for transactional, custom JPA repo logic.
     @PersistenceContext
     EntityManager entityManager;
 
