@@ -1,10 +1,15 @@
 package com.example.demo;
 
+import com.example.demo.DemoViewModel.DemoPerson;
 import com.example.demo.validation.ApiValidationHandler.ApiValidationHandler;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONArray;
+import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Pattern;
 
 @SpringBootTest
@@ -135,5 +140,34 @@ class HelloWorldApplicationTests {
 		for(String data: injectionBadData)
 			assert(!barcodePattern.matcher(data).matches());
 
+	}
+
+	@Test
+	public void testWorkShopDemo() throws JSONException {
+
+		// creates composite demo people for data storage within model map
+		final DemoPerson demoPerson1 = new DemoPerson("most interesting person ever", 30);
+		final DemoPerson demoPerson2 = new DemoPerson("most boring person ever", 35);
+
+		// creates a list literal and store within model map
+		List<DemoPerson> demoPersonList = Arrays.asList(demoPerson1, demoPerson2);
+
+		for(DemoPerson demoPerson : demoPersonList)
+			assert(demoPerson != null && (
+					demoPerson.personName.equals("most interesting person ever") ||
+							demoPerson.personName.equals("most boring person ever")
+					));
+
+		// creates a JSONArray and enumerates the JSON representation of the demo people
+		JSONArray jsonArray = new JSONArray();
+		jsonArray.put(demoPerson1.toJsonObject());
+		jsonArray.put(demoPerson2.toJsonObject());
+
+		for(int i = 0; i < jsonArray.length(); i++)
+			assert(
+					jsonArray.getJSONObject(i).getString("personName").equals("most interesting person ever") ||
+							jsonArray.getJSONObject(i).getString("personName").equals("most boring person ever")
+			);
+			//System.out.println(i + ": " + jsonArray.getJSONObject(i).toString());
 	}
 }

@@ -1,8 +1,10 @@
 package com.example.demo.controller;
 
 import com.example.demo.Car;
+import com.example.demo.DemoViewModel.DemoPerson;
 import com.example.demo.LicensePlate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -170,5 +172,24 @@ public class MainController {
     @RequestMapping(path = "/apiTest", method = RequestMethod.GET)
     public String getApiTest(){
         return "apiTest";
+    }
+
+    @RequestMapping(path = "/workshopDemo", method = RequestMethod.GET)
+    public String getWorkshopDemo(ModelMap modelMap){
+
+        // creates composite demo people for data storage within model map
+        final DemoPerson demoPerson1 = new DemoPerson("most interesting person ever", 30);
+        final DemoPerson demoPerson2 = new DemoPerson("most boring person ever", 35);
+
+        // creates a list literal and store within model map
+        modelMap.addAttribute("complexListData", Arrays.asList(demoPerson1, demoPerson2));
+
+        // creates a JSONArray and enumerates the JSON representation of the demo people
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.put(demoPerson1.toJsonObject());
+        jsonArray.put(demoPerson2.toJsonObject());
+        modelMap.addAttribute("jsonComplexData", jsonArray);
+
+        return "workshopDemo";  // OK -- exist at pull-request merge time
     }
 }
