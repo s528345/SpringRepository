@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Arrays;
@@ -169,5 +170,51 @@ class HelloWorldApplicationTests {
 							jsonArray.getJSONObject(i).getString("personName").equals("most boring person ever")
 			);
 			//System.out.println(i + ": " + jsonArray.getJSONObject(i).toString());
+	}
+
+	@Test
+	public void testJsonWorkshop(){
+		try {
+			JSONObject json = new JSONObject();
+			// can create json object with a json string too in constructor
+			// can capture api (NOT web controller form data) data is the consumption is labeled
+			// application/json -- @RequestBody String jsonString
+			// Map<String, Object> suits our purposes, however
+
+			JSONObject subJson = new JSONObject();
+
+			subJson.put("subTestInt", 5);
+			assert(subJson.getInt("subTestInt") == 5);
+
+			subJson.put("subTestString", "string");
+			assert(subJson.getString("subTestString").equals("string"));
+
+			int[] array = {1, 2, 3};
+
+			json.put("testInt", 3);
+			json.put("testBool", true);
+			json.put("testBool", false); // invokes clobber
+			json.put("testNull", null);
+			json.put("testObject", subJson);
+
+			JSONArray jsonArray = new JSONArray();
+			for(int value: array)
+				jsonArray.put(value); // keep as same data type... or else
+
+			json.put("arrayOfInts", jsonArray);
+
+			System.out.println("json object:\n" + json.toString());
+
+			jsonArray = json.getJSONArray("arrayOfInts");
+
+			for (int i = 0; i < jsonArray.length(); i++) {
+				System.out.println("Index value(" + i + "): " + jsonArray.getInt(i));
+				assert(jsonArray.getInt(i) == i + 1);
+			}
+
+		}
+		catch(Exception ex){
+			System.out.println("oops: " + ex.getMessage());
+		}
 	}
 }
