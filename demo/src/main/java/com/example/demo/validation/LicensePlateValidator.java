@@ -8,6 +8,7 @@ import org.springframework.boot.configurationprocessor.json.JSONObject;
 import java.util.regex.*;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import javax.validation.constraints.NotNull;
 
 public class LicensePlateValidator implements ConstraintValidator<CheckCase, String> {
 // @Checkcase(...)
@@ -15,6 +16,8 @@ public class LicensePlateValidator implements ConstraintValidator<CheckCase, Str
     private CheckCaseEnum caseMode;
     private int _myValue;
     private String message;
+
+    private static String staticVariable = CheckCase.GENERIC_ERROR_MESSAGE;
 
     @Override
     public void initialize(CheckCase constraintAnnotation) {
@@ -30,6 +33,7 @@ public class LicensePlateValidator implements ConstraintValidator<CheckCase, Str
         }
         regexTests();
         useJsonObject();
+        System.out.println("word after splice: " + replaceEmailSuffix());
         boolean isValid;
         if ( caseMode == CheckCaseEnum.Upper && this._myValue == 0) {
             isValid = object.equals( object.toUpperCase() );
@@ -74,6 +78,7 @@ public class LicensePlateValidator implements ConstraintValidator<CheckCase, Str
         Matcher escapeM = escape.matcher("blah\n[");
         System.out.println(escapeM.matches());
     }
+    // private static final Pattern studentIdPattern = Pattern.compile("^919[0-9]{6,6}$");
 
     private static void regexTests(){
 
@@ -140,6 +145,7 @@ public class LicensePlateValidator implements ConstraintValidator<CheckCase, Str
 
             json.put("testInt", 3);
             json.put("testBool", true);
+            json.put("testBool", false); // invokes clobber
             json.put("testNull", null);
             json.put("testObject", subJson);
 
@@ -149,7 +155,7 @@ public class LicensePlateValidator implements ConstraintValidator<CheckCase, Str
 
             json.put("arrayOfInts", jsonArray);
 
-            System.out.println(json.toString());
+            System.out.println("json object:\n" + json.toString());
 
             jsonArray = json.getJSONArray("arrayOfInts");
 
@@ -161,5 +167,10 @@ public class LicensePlateValidator implements ConstraintValidator<CheckCase, Str
             System.out.println("oops: " + ex.getMessage());
         }
 
+    }
+
+    private static @NotNull String replaceEmailSuffix(){
+        // "s123456@gmail.com"
+        return "s123456@gmail.com".replaceAll("@.*","");
     }
 }

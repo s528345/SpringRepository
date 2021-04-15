@@ -23,10 +23,11 @@ public class MaskConfig implements WebMvcConfigurer {
             "classpath:/static/", "classpath:/public/"
     };
 
-    private static final String CLASSPATH_IMG_RESOURCE_LOCATION = "classpath:/static/img/";
     private static final String CLASSPATH_JS_RESOURCE_LOCATION = "classpath:/static/JS/";
 
     private static final String CLASSPATH_CSS_RESOURCE_LOCATION = "classpath:/static/CSS/";
+
+    private static final String CLASSPATH_IMG_RESOURCE_LOCATION = "classpath:/static/img/";
 
     @Bean
     public ViewResolver viewResolver(){
@@ -64,15 +65,14 @@ public class MaskConfig implements WebMvcConfigurer {
     }
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-       registry.addResourceHandler("/img/**")
-               .addResourceLocations(CLASSPATH_IMG_RESOURCE_LOCATION);
-
-       registry.addResourceHandler("/css/**")
-               .addResourceLocations(CLASSPATH_CSS_RESOURCE_LOCATION);
-
-              registry.addResourceHandler("/js/**")
-               .addResourceLocations(CLASSPATH_JS_RESOURCE_LOCATION);
-               registry.addResourceHandler("/**")
+        registry.addResourceHandler("/img/**")
+                .addResourceLocations(CLASSPATH_IMG_RESOURCE_LOCATION);
+        registry.addResourceHandler("/css/**")
+                .addResourceLocations(CLASSPATH_CSS_RESOURCE_LOCATION);
+        registry.addResourceHandler("/js/**")
+                .addResourceLocations(CLASSPATH_JS_RESOURCE_LOCATION);
+        // views that use js must start with "js/<js file name>
+       registry.addResourceHandler("/**")
                .addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS);
 
     }

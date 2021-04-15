@@ -1,10 +1,7 @@
 package com.example.demo.validation;
 
-import com.example.demo.validation.LicensePlateValidator;
-
 import javax.validation.Constraint;
 import javax.validation.Payload;
-import javax.validation.constraints.NotNull;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -12,12 +9,23 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@Target({ FIELD, METHOD, PARAMETER, ANNOTATION_TYPE, TYPE }) // add TYPE to be applicable to class
+
+import com.example.demo.validation.LicensePlateValidator;
+
+import javax.validation.Constraint;
+import javax.validation.Payload;
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+@Target({ TYPE }) // add TYPE to be applicable to class
 @Retention(RUNTIME)
-@Constraint(validatedBy = LicensePlateValidator.class)
+@Constraint(validatedBy = ManualValidatorClass.class)
 @Documented
-public @interface CheckCase {
-    static final String GENERIC_ERROR_MESSAGE = "";
+public @interface ManualValidatorInterface {
 
     String message() default "{org.hibernate.validator.referenceguide.chapter06.CheckCase." +
             "message}";
@@ -26,17 +34,14 @@ public @interface CheckCase {
 
     Class<? extends Payload>[] payload() default { };
 
-    CheckCaseEnum value() default CheckCaseEnum.Lower;
-    String getDefaultErrorMessage() default GENERIC_ERROR_MESSAGE;
-    int myTestValue() default 0;
+    int value() default 22;
 
-    // @Min(10000, myTestValue = 10008)
-    //int age;
+    String myTestValue() default "Nick";
 
     @Target({ FIELD, METHOD, PARAMETER, ANNOTATION_TYPE })
     @Retention(RUNTIME)
     @Documented
     @interface List {
-        CheckCase[] value();
+        com.example.demo.validation.LicensePlateClassValidatorInterface[] value();
     }
 }

@@ -1,6 +1,17 @@
 package com.example.demo.controller.rest;
 
+import com.example.demo.LicensePlate1;
+import com.example.demo.testInheritance.B;
+import com.example.demo.validation.ApiValidationHandler.ApiValidationHandler;
+import com.example.demo.validation.CheckCase;
+import com.example.demo.validation.LicensePlateClassValidator;
+import com.example.demo.validation.LicensePlateClassValidatorInterface;
+import org.javatuples.Pair;
+import org.javatuples.Triplet;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONArray;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -10,12 +21,15 @@ import org.springframework.web.bind.annotation.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import com.example.demo.fakeData;
 import com.example.demo.controller.repository.*;
+
+import javax.validation.ConstraintValidatorContext;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import javax.validation.constraints.NotNull;
 
 @RestController
 @RequestMapping(path = "/rest/api/")
@@ -30,6 +44,9 @@ public class RestControllerDemo {
         headers.add("Custom-Header", "foo");
 
         System.out.println(bodyMap.get("name") == null || bodyMap.get("age") == null);
+
+        // inheritance test from static context
+        B.printFullName();
 
         return new ResponseEntity<fakeData>(
                 new fakeData(
@@ -131,7 +148,19 @@ public class RestControllerDemo {
 
     @RequestMapping(path = "/frontEnd", method = RequestMethod.POST,
     consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Map<String, Object>> FrontEndREST(@RequestBody Map<String, Object> modelMap){
+    public ResponseEntity<Map<String, Object>> FrontEndREST(@RequestBody String jsonString)
+    throws JSONException {
+
+        System.out.println(jsonString);
+
+        JSONObject modelMap = new JSONObject(jsonString);
+
+        if(false)
+            return new ResponseEntity<Map<String, Object>>(
+                        Map.of("number", 2),
+                    new HttpHeaders(),
+                    HttpStatus.OK
+                    );
 
         /* request body:
             - name: person name (string)
@@ -195,6 +224,85 @@ public class RestControllerDemo {
                 HttpStatus.OK
         );
 
+    }
+
+    private static final String OPTIONAL_NULL_ERROR = "Error: cannot accessed configured error response -- contact IT support";
+
+    @Autowired
+    private Validator validator;
+
+    @Autowired
+    ApiValidationHandler handler;
+
+//    @Autowired
+//    ApiValidationHandler stuff;
+
+    @GetMapping(path = "/testValidator", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getTestValidator(@RequestBody Map<String, Object> map) throws JSONException {
+
+       // System.out.println(stuff != null);
+
+//        System.out.println(map.containsKey("yearsOwned"));
+//        System.out.println(map.containsKey("licensePlate"));
+//        System.out.println(map.containsKey("ownerName"));
+
+        final LicensePlate1 plate1 = new LicensePlate1(
+                (String)map.get("ownerName"),
+                (String)map.get("licensePlate"),
+                (int)map.get("yearsOwned")
+        );
+
+        Optional<String> validationResponse =
+                handler.getApiBindingError(plate1, validator);
+
+        // NOTE: error type will never be a generic error in this demo
+        if(validationResponse.isPresent()){
+
+
+//
+//            final String response;
+//
+//            if(errorResponse.getValue2() == BindingErrorResponseType.JSON)
+//                response = errorResponse.getValue0().isPresent() ?
+//                        errorResponse.getValue0().get().toString() : OPTIONAL_NULL_ERROR;
+//            else
+//                response = errorResponse.getValue1().isPresent() ?
+//                        errorResponse.getValue1().get() : OPTIONAL_NULL_ERROR;
+
+
+            return new ResponseEntity<String>(
+                     validationResponse.orElseThrow(() -> new RuntimeException("Error accessing validation-binding response. Project compromised." +
+                             "Please contact IT Support.")),
+                    new HttpHeaders(),
+                    HttpStatus.OK
+            );
+        }
+
+        // do other important business logic
+
+        // empty json array (demo purpose)
+        return new ResponseEntity<String>(
+                new JSONArray().toString(),
+                new HttpHeaders(),
+                HttpStatus.OK
+        );
+
+    }
+
+    // would hold all api view models
+    public interface ApiViewModel{
+        public static <T extends Test> @NotNull T createDaStuff(){
+            return null;
+        }
+    }
+
+    public interface Test{}
+
+    private static class DummyApiViewModel implements ApiViewModel{
+
+        public static <T extends Test> @NotNull T createDaStuff(){
+            return null;
+        }
     }
 
 
